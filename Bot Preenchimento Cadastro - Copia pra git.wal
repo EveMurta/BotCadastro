@@ -1,0 +1,65 @@
+�(//Descrição:
+//   Esse script automatiza o registro de múltiplos colaboradores em uma página web e cria um log para cada registro.
+//Para usar esse script você precisa:
+//  Um arquivo CSV (people.csv).
+//Sobre o script:
+//   Criado utilizando a versão 21.0.1 do IBM Robotic Process Automation.
+defVar --name code --type Numeric
+defVar --name codeId --type String
+defVar --name peopleFile --type String
+defVar --name peopleTable --type DataTable
+defVar --name peopleCount --type Numeric
+defVar --name userFirstName --type String
+defVar --name userLastName --type String
+defVar --name userEmail --type String
+defVar --name userPhoneNumber --type String
+defVar --name userGender --type String
+defVar --name userPassword --type String
+defVar --name noteText --type String
+defVar --name codeString --type String
+defVar --name codeValue --type String
+selectFile --title getPeople --filter "*.csv" --initialdirectory "C:\\web automation peoples" --comment "Seleciona o arquivo CSV" peopleFile=filepath
+readCSV --filepath "${peopleFile}" --delimiter "," --hasheaders  --missingfieldaction "ParseError" --comment "Lê o arquivo CSV e insere em uma tabela" peopleTable=value
+webStart --name webInstance --type "Chrome" --userprofilepreferences "AutomationOptimized" --downloadpath "C:\\web automation peoples" --comment "Inicia o Browser"
+webNavigate --url "http://localhost:5555/" --comment "Acessa o site pela porta local 5555"
+for --variable ${peopleCount} --from 1 --to ${peopleTable.Rows} --step 1 --comment "Percorre a tabela"
+	mapTableRow --dataTable ${peopleTable} --row ${peopleCount} --mappings "[{\"Name\":null,\"Number\":\"1\",\"Output\":\"${userFirstName}\"},{\"Name\":null,\"Number\":\"2\",\"Output\":\"${userLastName}\"},{\"Name\":null,\"Number\":\"3\",\"Output\":\"${userEmail}\"},{\"Name\":null,\"Number\":\"4\",\"Output\":\"${userPhoneNumber}\"},{\"Name\":null,\"Number\":\"5\",\"Output\":\"${userGender}\"}]" --comment "Mapeia os campos da tabela"
+	webWaitElement --selector "Id" --id firstName --timeout "00:00:05"
+	webClick --selector "Id" --id firstName
+	webWaitElement --selector "Id" --id firstName --timeout "00:00:05"
+	webSet --value "${userFirstName}" --selector "Id" --id firstName --simulatehuman  --comment "Insere o valor da variável conforme o mapa"
+	webWaitElement --selector "Id" --id lastName --timeout "00:00:05"
+	webSet --value "${userLastName}" --selector "Id" --id lastName --simulatehuman
+	webWaitElement --selector "Id" --id email --timeout "00:00:05"
+	webSet --value "${userEmail}" --selector "Id" --id email --simulatehuman
+	webWaitElement --selector "Id" --id phone --timeout "00:00:05"
+	webSet --value "${userPhoneNumber}" --selector "Id" --id phone --simulatehuman
+	createRandomText --useuppercaseletters  --uselowercaseletters  --usedigits  --usesymbols  --minimumlength 7 --maximumlength 10 --comment "Cria uma senha aleatória" userPassword=value
+	webWaitElement --selector "Id" --id password --timeout "00:00:05"
+	webSet --value "${userPassword}" --selector "Id" --id password --simulatehuman
+	webWaitElement --selector "Id" --id confirmPassword --timeout "00:00:05"
+	webSet --value "${userPassword}" --selector "Id" --id confirmPassword --simulatehuman
+	if --left "${userGender}" --operator "Equal_To" --right male --comment "Condição para selecionar o gênero"
+		webWaitElement --selector "Id" --id genderMale --timeout "00:00:05"
+		webClick --selector "Id" --id genderMale --simulatehuman
+	elseIf --left "${userGender}" --operator "Equal_To" --right female
+		webWaitElement --selector "Id" --id genderFemale --timeout "00:00:05"
+		webClick --selector "Id" --id genderFemale --simulatehuman
+	endIf
+	webGet --selector "Id" --id codeString --comment "Pega o código" codeValue=value
+	getRegex --text "${codeValue}" --regexPattern "\\d+" --regexOptions "0" --comment "Transforma o código em expressão regular para inserção em JS" codeValue=value
+	webWaitElement --selector "Id" --id code --timeout "00:00:05"
+	webSet --value "${codeValue}" --selector "Id" --id code --simulatehuman  --comment "Insere o código"
+	webWaitElement --selector "CssSelector" --css "html > body > div:nth-child(2) > div:nth-child(2) > button" --timeout "00:00:05"
+	webClick --selector "CssSelector" --css "html > body > div:nth-child(2) > div:nth-child(2) > button"
+	goSub --label validaCadastro --comment "Valida se o cadastro foi efetuado com sucesso!"
+next
+webClose --name webInstance --leavebrowseropen
+beginSub --name validaCadastro
+	webGet --selector "Id" --id noteText --comment "Pega o retorno do site" noteText=value
+	if --left "${noteText}" --operator "Contains" --right "Success:" --comment "Condição para saber se o cadastro foi realizado"
+		logMessage --message "O cadastro do usuário ${userFirstName} ${userLastName} foi criado com sucesso!!!\r\n    - First Name: ${userFirstName} | Last Name: ${userLastName} | Email: ${userEmail} | Phone: ${userPhoneNumber} | Password: ${userPassword} | Gender: ${userGender}" --type "Info"
+	else
+		logMessage --message "O cadastro do usuário ${userFirstName} ${userLastName} falhou.\r\n    - ${noteText}" --type "Info"
+	endIf
+endSub*	23.0.15.0
