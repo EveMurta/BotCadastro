@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--meta charset='utf-8'-->
+    <title>Register</title>
+    <!--meta name='viewport' content='width=device-width, initial-scale=1'-->
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <script type="text/javascript" src="js/js.js"></script>
+</head>
+<body onload="code()">
+
+    <div class="left">
+        <p class="title-text">IBM RPA<br>Academy</p>
+    </div>
+
+    <div class="right">
+
+        <form>
+            <div class="form-item form-name">
+                <label>First Name:</label>
+                <input class="input-text" type="text" id="firstName" name="firstName"/>
+            </div>
+            <div class="form-item form-name form-last-name">
+                <label>Last Name:</label>
+                <input class="input-text" type="text" id="lastName" name="lastName"/>
+            </div>
+            <div class="form-item form-data">
+                <label>Email:</label>
+                <input class="input-text" type="text" id="email" name="email"/>
+            </div>
+            <div class="form-item form-data">
+                <label>Phone:</label>
+                <input class="input-text" type="text" id="phone" name="phone"/>
+            </div>
+            <div class="form-item form-data">
+                <label>Password:</label>
+                <input class="input-text" type="password" id="password" name="password"/>
+            </div>
+            <div class="form-item form-data">
+                <label>Confirm Password:</label>
+                <input class="input-text" type="password" id="confirmPassword" name="confirmPassword"/>
+            </div>
+            <div class="form-item form-gender">
+                <label class="display-block">Gender:</label>
+                <input type="radio" id="genderMale" name="gender" value="Male"/> Male<br />
+                <input type="radio" id="genderFemale" name="gender" value="female"/> Female<br />
+            </div>
+            <div class="form-item form-code">
+                <label id="codeString">Type the code "":</label>
+                <input class="input-text" type="text" id="code" name="code"/>
+            </div>
+        </form>
+
+        <div class="form-item">
+            <button class="form-button" type="submit" onclick="register()">Register</button>
+        </div>
+
+        <div id="notification">
+            <div id="note" class="note note-note">
+                <p class="note-text" id="noteText"><b>Note:</b> This site is only used for example, so no registration is actually performed.</p>
+            </div>
+        </div>
+
+        <div class="about">
+            <a href="data:text/plain;base64,VGVybXMgb2YgU2VydmljZSBhbmQgQ29uZGl0aW9ucyBBZ3JlZW1lbnRzDQoNCg0KDQpMb3JlbSBpcHN1bSBkb2xvciBzaXQgYW1ldC4gRXQgbmloaWwgdmVsaXQgaGljIGVsaWdlbmRpIGNvbnNlY3RldHVyIHF1aSBhdXRlbSB0ZW1wb3JlPyBFYSBtb2xsaXRpYSBxdW9kIGluIHRlbXBvcmlidXMgZXhjZXB0dXJpIGF1dCBxdWlkZW0gcmVwZWxsYXQuIEV0IGl0YXF1ZSBtb2xlc3RpYWUgZXN0IHN1bnQgZW5pbSBub24gbWFpb3JlcyBtYWlvcmVzIGV0IGl1cmUgZGlnbmlzc2ltb3MgYSBkb2xvcmVzIHVsbGFtIGlkIGRvbG9yZXMgcXVvZCBub24gZGlnbmlzc2ltb3MgaW5jaWR1bnQuIEVzdCBxdWlkZW0gZGVsZW5pdGkgZXQgbmloaWwgbW9kaSBzaXQgc3VudCB1bmRlIGV0IG5vYmlzIGV2ZW5pZXQgZXQgc3VudCB1bmRlIEF0IG51bXF1YW0gcXVhcyBxdWkgZWFxdWUgaXVzdG8hDQoNCk5vbiBhY2N1c2FtdXMgcXVvZCBxdWkgbGFib3J1bSBjdWxwYSBzaXQgdW5kZSBzdW50IHV0IGVhcXVlIGVycm9yIHF1aSBpbnZlbnRvcmUgYWxpcXVhbS4gU2VkIHRlbmV0dXIgZWxpZ2VuZGkgYSBwZXJzcGljaWF0aXMgcXVhc2kgdXQgcXVpYSBkb2xvcmVtIHV0IGR1Y2ltdXMgbmF0dXMgdXQgaW1wZWRpdCBxdWlhIGN1bSByZXBlbGxlbmR1cyBzaW1pbGlxdWU/IFJlbSB2ZXJpdGF0aXMgbWF4aW1lIGVzdCBjb25zZXF1YXR1ciBpbGxvIGV0IGVhcnVtIGlsbHVtIHF1aSBxdWFzIHF1aWRlbSBzZWQgYW1ldCBsYWJvcnVtIGVzdCByZXJ1bSBjb25zZXF1YXR1ciBldW0gY29uc2VxdWF0dXIgcGVyZmVyZW5kaXMuIFF1byBtaW5pbWEgaXN0ZSByZW0gZW5pbSBsYWJvcmlvc2FtIHNhcGllbnRlIHN1bnQgdXQgcGVyc3BpY2lhdGlzIGRvbG9yZW0gZW9zIGRvbG9yZXMgcG9ycm8uDQoNCkF0IGNvbnNlcXVhdHVyIG5lcXVlIGF1dCBwb3NzaW11cyBvZmZpY2lpcyBxdWkgY29uc2VjdGV0dXIgYmxhbmRpdGlpcyB1dCBibGFuZGl0aWlzIHF1YW0gc2VkIGN1bHBhIHJlY3VzYW5kYWUgdmVsIHF1YWVyYXQgb2RpdC4gVXQgZnVnYSB1bmRlIGVzdCBvZGl0IGV0IHRvdGFtIGRpZ25pc3NpbW9zIGVzdCBhcmNoaXRlY3RvIG5paGlsPyBRdWkgb21uaXMgbmlzaSBpbiBpdGFxdWUgb21uaXMgMzMgY29ycG9yaXMgY3VwaWRpdGF0ZSBhdXQgaW50ZXJub3MgZGVsZWN0dXMuDQoNClF1aSBldmVuaWV0IHNhZXBlIGF1dCBkZXNlcnVudCByZWN1c2FuZGFlIHV0IHZlbGl0IGV4cGVkaXRhIGluIGlsbG8gZWFxdWUgZXQgcXVpYSBuZXF1ZSBxdW8gcmVwcmVoZW5kZXJpdCBtb2RpIHZlcml0YXRpcyBhc3Blcm5hdHVyPyBJbiBleGVyY2l0YXRpb25lbSByZXJ1bSBxdW8gdmVybyBpc3RlIHV0IG5lY2Vzc2l0YXRpYnVzIGVsaWdlbmRpIGV0IGRvbG9yZSBkb2xvcmVtIGF1dCBzb2x1dGEgZXhwbGljYWJvIGV0IGF1dGVtIHZvbHVwdGF0ZW0gdXQgZGVsZWN0dXMgZWl1cy4gU2VkIGxhYm9yaW9zYW0gbmloaWwgcXVpIGNvbnNlY3RldHVyIHZvbHVwdGFzIGVzdCBtaW51cyBkaWN0YSBldCBsYWJvcnVtIGNvbnNlcXVhdHVyLg0KDQpOb24gbmVjZXNzaXRhdGlidXMgcmVpY2llbmRpcyBhdXQgcmVwZWxsYXQgdG90YW0gaWQgdm9sdXB0YXR1bSBnYWxpc3VtIGV4IGFzc3VtZW5kYSBvZmZpY2lpcy4gUXVpIHZvbHVwdGF0ZXMgdm9sdXB0YXRlbSBzZWQgY29ycnVwdGkgZ2FsaXN1bSAzMyBlbmltIHZvbHVwdGF0ZW0gZXggbWFpb3JlcyBjb3Jwb3JpcyBlc3QgYXV0ZW0gdm9sdXB0YXMgcXVpIHZlbmlhbSB2ZW5pYW0h" download="Terms of Service and Conditions Agreements">Download the <b>Terms of Service and Conditions Agreements</b></a>
+        </div>
+    </div>
+</body>
+</html>
